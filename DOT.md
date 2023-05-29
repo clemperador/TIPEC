@@ -26,8 +26,8 @@ Le DOT peut être aussi l'occasion d'indiquer les éventuelles difficultés renc
 Notez **chaque semaine** ce que vous faites et la date correspondante.
 
 - Jeudi 2 février 2023 : première séance de TIPE. Présentation des attendus.
--
--
+- Février - Mai 2023, developpement du sujet 'La modélisation Mathématique de l'Athlétisme', avec des idées de simulations et comparaisons.
+- 25 Mai 2023, changement du thème vers le Domineering.
 -
 -
 -
