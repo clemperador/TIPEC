@@ -26,8 +26,8 @@ Le choix de 5 mots-clés incite le candidat à **isoler les éléments les plus 
 1. Simulations
 2. Probabilités
 3. Optimisation
-4. 
-5.
+4. Machine-Learning
+5. Visualisation
 
 
 ## Bibliographie commentée (max 650 mots)
@@ -47,9 +47,9 @@ Comment étendre l'analyse du domineering aux tableaux plus grands?
 
 ## Objectifs du TIPE (max 100 mots)
 
-1. 
-2.
-3.
+1. Étudier et Vérifier les investigations actuelles sur le jeu du Domineering dans des tableaux basiques
+2. Simuler des jeux à dimensions plus grandes pour prédire le gagneur dans différents situations.
+3. Pouvoir programmer des stratégies (machine learning)
 
 
 ## Références bibliographiques (2 à 10 références)
