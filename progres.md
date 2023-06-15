@@ -5,7 +5,11 @@
   
 - Creation d'une fonction qui garde chacun des mouvements fait dans un jeu dans une liste de
   'mouvements', les mouvements définis avec une structure 'play'.
-  
-  
-À Futur:
+
+  Objectifs:
 - Faire une fonction qui permet de simuler chaque jeu possible.
+
+On considère le type 'game' qui équivaut à un tableau de 'plays'.
+On veut créer une fonction qui crée une tableau de tableaux de plays, et donc un tableau des jeus possibles.
+
+Pour cela, on commence par calculer le nombre de jeus possibles dans un tableau de mxn.
