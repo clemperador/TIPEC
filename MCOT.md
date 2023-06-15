@@ -2,7 +2,7 @@
 Le jeu du 'domineering' en configuration nxn.
 
 ## Motivations pour le choix du sujet
-L'interêt de programer et de faire un nombre élevé de simulations pour étudier un problème.
+L'interêt de programer et de réaliser un nombre élevé de simulations pour étudier les possibles solutions problème.
 
 ## Ancrage du sujet au thème de l'année
 Le domineering est un jeu.
@@ -34,12 +34,12 @@ Le choix de 5 mots-clés incite le candidat à **isoler les éléments les plus 
 
 https://en.wikipedia.org/wiki/Domineering - Explication du jeu et son interêt académique.
 
-https://arxiv.org/ftp/arxiv/papers/1506/1506.03949.pdf
-
 http://library.msri.org/books/Book29/files/unsolved.pdf - Page 2, description du problème (Pour montrer sa pértinance scientifique)
 
-http://webdocs.cs.ualberta.ca/~games/domineering/updated.html - études du domineering pour des tableaux de dimensions jusqu'à 11x30
+http://webdocs.cs.ualberta.ca/~games/domineering/ - Créateur du _Obsequi_, programme avec lequel plusieurs tableaux ont été
+résolus. La page inclus aussi les résultats pour de tableaux de plusieurs dimensions (jusqu'à 11x30).
 
+https://www.sciencedirect.com/science/article/pii/S0304397599000821 - Résolution du domineering 8x8
 
 ## Problématique retenue (max 50 mots)
 
