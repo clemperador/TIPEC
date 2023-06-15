@@ -11,5 +11,3 @@
 
 On considère le type 'game' qui équivaut à un tableau de 'plays'.
 On veut créer une fonction qui crée une tableau de tableaux de plays, et donc un tableau des jeus possibles.
-
-Pour cela, on commence par calculer le nombre de jeus possibles dans un tableau de mxn.
