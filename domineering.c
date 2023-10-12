@@ -65,12 +65,13 @@ void printmat(int m, int n, int mat[][n]){
 
 // Can you place a V/H domino in (i,j) ?
 bool legalvert(int m, int n, int mat[][n], int i, int j){
-    if(i+1 >= m){return false;}
+    if(i >= m){return false;}
     if(mat[i][j] != 0 || mat[i+1][j] != 0){return false;}
     return true;
 }
+
 bool legalhori(int m, int n, int mat[][n], int i, int j){
-    if(j+1 >= n){return false;}
+    if(j >= n){return false;}
     if(mat[i][j] != 0 || mat[i][j+1] != 0){return false;}
     return true;
 }
@@ -78,7 +79,7 @@ bool legalhori(int m, int n, int mat[][n], int i, int j){
 // Places a V/H domino in (i,j), if legal.
 play placevert(int m, int n, int mat[][n], int i, int j){ // Places vertical domino at (i)(j) and (i+1)(j)
     play p;
-    if(!legalvert(m,n,mat,i,j)){printf("Can't place at (%d,%d).\n", i, j);}
+    if(!legalvert(m,n,mat,i,j)){/*printf("Can't place at (%d,%d).\n", i, j);*/}
     else{
         mat[i][j] = 1;
         mat[i+1][j] = 1;
@@ -88,7 +89,7 @@ play placevert(int m, int n, int mat[][n], int i, int j){ // Places vertical dom
 }
 play placehori(int m, int n, int mat[][n], int i, int j){ // Places vertical domino at (i)(j) and (i+1)(j)
     play p;
-    if(!legalhori(m,n,mat,i,j)){printf("Can't place at (%d,%d).\n", i, j);}
+    if(!legalhori(m,n,mat,i,j)){/*printf("Can't place at (%d,%d).\n", i, j);*/}
     else{
         mat[i][j] = 2;
         mat[i][j+1] = 2;
@@ -100,8 +101,9 @@ play placehori(int m, int n, int mat[][n], int i, int j){ // Places vertical dom
 // Checks if V/H can still do more moves.
 bool nomorehori(int m, int n, int mat[][n]){ // returns true if no more pieces can be placed
     for(int i = 0 ; i<m ; i++ ){
-        for(int j = 0; j<n-1 ; j++){
-            if(mat[i][j] == 0 && mat[i][j+1] == 0){
+        for(int j = 0; j<n ; j++){
+            if(mat[i][j] == 0 &&
+             mat[i][j+1] == 0){
                 return false;
             }
         }
@@ -110,8 +112,9 @@ bool nomorehori(int m, int n, int mat[][n]){ // returns true if no more pieces c
 }
 bool nomorevert(int m, int n, int mat[][n]){ // returns true if no more pieces can be placed
     for(int j = 0 ; j<n ; j++ ){
-        for(int i = 0; i<m-1 ; i++){
-            if(mat[i][j] == 0 && mat[i+1][j] == 0){
+        for(int i = 0; i<m ; i++){
+            if(mat[i][j] == 0 
+            && mat[i+1][j] == 0){
                 return false;
             }
         }
@@ -119,66 +122,58 @@ bool nomorevert(int m, int n, int mat[][n]){ // returns true if no more pieces c
     return true;
 }
 
-// Places a V/H on the first place it finds. Returns play 
-play placefirstvert(int m, int n, int mat[][n]){ 
+play placerandvert(int m, int n, int mat[][n]){ // Places vertical domino at (i)(j) and (i+1)(j)
     play p;
-    for(int j = 0 ; j<n ; j++ ){
-        for(int i = 0; i<m-1 ; i++){
-            if(mat[i][j] == 0 && mat[i+1][j] == 0){
-                mat[i][j] = 1; mat[i+1][j] = 1;
-                p.pla = 1; p.pos_x = i; p.pos_y = j;
-                return p;
-            }
-        }
-    }
-    printf("No more plays can be made for V\n"); p.pla = 1; p.pos_x = -1; p.pos_y = -1; return p;
-}
-play placefirsthori(int m, int n, int mat[][n]){ 
-    play p;
-    for(int i = 0 ; i<m ; i++ ){
-        for(int j = 0; j<n-1 ; j++){
-            if(mat[i][j] == 0 && mat[i][j+1] == 0){
-                mat[i][j] = 2; mat[i][j+1] = 2;
-                p.pla = 2; p.pos_x = i; p.pos_y = j;
-                return p;
-            }
-        }
-    }
-    printf("No more plays can be made by H\n"); p.pla = 2; p.pos_x = -1; p.pos_y = -1; return p;
+    int i = rand() % m;
+    int j = rand() % n;
+    while(!legalvert(m,n,mat,i,j)){
+        i = rand() % m; j = rand() % n;}
+
+    mat[i][j] = 1;
+    mat[i+1][j] = 1;
+    p.pla = 1; p.pos_x = i; p.pos_y = j;
+    return p;
 }
 
-play* playslow(int m, int n, int mat[][n], int s, double t){ // t = temps entre chaque tour.
+play placerandhori(int m, int n, int mat[][n]){ // Places horizontal domino at (i)(j) and (i)(j+1)
+    play p;
+    int i = rand() % m; int j = rand() % n;
+    while(!legalhori(m,n,mat,i,j)){
+        i = rand() % m;
+        j = rand() % n;}
+
+    mat[i][j] = 2;
+    mat[i][j+1] = 2;
+    p.pla = 2; p.pos_x = i; p.pos_y = j;
+    return p;
+}
+
+play* playrandom(int m, int n, int mat[][n], int s){ 
+    init_matrix(m,n,mat);
     int c = s;
     play* game = malloc(m*n*sizeof(play));
     int i = 0;
-
-    system("clear"); printmat(m,n,mat);
-
-    if(s == 1){
+    if(c == 1){
         while(!(nomorevert(m,n,mat) || nomorehori(m,n,mat))){
             if(nomorevert(m,n,mat)){
                 game[i].pla = 1; game[i].pos_x = -1;
             }
             else{
-                sleep(t);
-                game[i] = placefirstvert(m,n,mat);
-                system("clear"); printmat(m,n,mat); printplay(game[i]); if(i>0){printplay(game[i-1]);}
-                c = 1;
+                game[i] = placerandvert(m,n,mat);
+                c = 2;
+                i++;
             }
-            i++;
-            sleep(t);
+
 
             if(nomorehori(m,n,mat)){
                 game[i].pla=2; game[i].pos_x = -1;
             }
             else{
-                game[i] = placefirsthori(m,n,mat);
-                system("clear"); printmat(m,n,mat); printplay(game[i]); if(i>0){printplay(game[i-1]);}
-                c = 0;
+                game[i] = placerandhori(m,n,mat);
+                c = 1;
                 i++;
             }
         }
-
     }
     else{
         while(!(nomorehori(m,n,mat) || nomorevert(m,n,mat))){
@@ -187,49 +182,44 @@ play* playslow(int m, int n, int mat[][n], int s, double t){ // t = temps entre 
                 game[i].pla = 2; game[i].pos_x = -1;
             }
             else{
-            game[i] = placefirsthori(m,n,mat);
-            sleep(t);
-            system("clear"); printmat(m,n,mat); printplay(game[i]); if(i>0){printplay(game[i-1]);}
+            game[i] = placerandhori(m,n,mat);
+                i++;
+                c = 1;
             }
-            i++;
-            c = 0;
+
             if(nomorevert(m,n,mat)){
                 game[i].pla = 1; game[i].pos_x = -1;
             }
             else{
-                game[i] = placefirstvert(m,n,mat);
-                sleep(t);
-                system("clear"); printmat(m,n,mat); printplay(game[i]); if(i>0){printplay(game[i-1]);}
+                game[i] = placerandvert(m,n,mat);
+                i++;
+                c = 2;
             }
-            i++;
-            c = 1;
+            
         }
     }
     
-    if (c==2){
+    if (nomorevert(m,n,mat)){
         game[i].pla = 1; game[i].pos_x = -1;
     }
-    else{
+    else if (nomorehori(m,n,mat)){
         game[i].pla = 2; game[i].pos_x = -1;
     }
-    
-    printf("\n");
+    else {assert(false);}
+
     return game;
 }
 
 
-int andthewinneris(play game[]){ 
+int andthewinneris(play game[]){ // Returns 1 if vertical wins, 2 if horizontal wins.
     int i = 0;
     while(game[i].pos_x != -1){
     i++;}
     if(game[i].pos_x == -1){
-            printf("Winner:");
             if(game[i].pla == 1){
-                printf("H.\n");
                 return 2;
             }
             else{
-                printf("V.\n");
                 return 1;
             }}
 }
@@ -245,22 +235,96 @@ int andthestarterwas(play game[]){
     }
 }
 
+int horwincount (int m, int n, int s, int c){ // Plays c random games. s starts. Returns horizontal wincount.
+    
+    int mat[m][n];
+    init_matrix(m,n,mat);
+
+    int h = 0; int v = 0;
+    for (int i = 0; i < c; i++){
+        init_matrix(m,n,mat);
+        play* game;
+        game = playrandom(m,n,mat,s);
+        printgame(game);
+        printmat(m,n,mat);
+        if(andthewinneris(game) == 2)
+        {printf("GAME %d: H\n", i);h++;} else {printf("GAME %d: V\n\n", i);v++;}
+        }
+    
+    printf("Horizontal won %d/%d games. Vertical won %d/%d.\n",h,c,v,c);
+    return h;
+}
+
 int main(int argc, char *argv[]) {
 
-    int m = 50, n = 50, s = 0; // (m , n) dimensions du tableau. s = 1 , 2 si V ou H commence resp.
+    int m = 40;
+    int n = 40;
+    int ng = 10000;
 
-    int matrix[m][n];
+    int mat[m][n];
+    init_matrix(m,n,mat);
+    int cpt = 0;
+    
+    double per1;
+    double per2;
 
-    play* game = malloc(m*n*sizeof(play));
+    // First cycle. Vertical Starts.
+    system("clear");
+    printf("Loading...\n");
+    for(int j = 0;j<ng;j++){
+        init_matrix(m,n,mat);
+        play* game;
+        game = playrandom(m,n,mat,1);
+        
+        if(andthewinneris(game) == 1){
+            cpt++;}
+    }
 
-    init_matrix(m,n,matrix);
+    per1 = (double)cpt/(double)ng;
 
-    game = playslow(m,n,matrix,1,1);
+    int cpt2 = 0;
 
-    printgame(game);
+    // Second cycle. Horizontal starts.
+    for(int j = 0;j<ng;j++){
+        init_matrix(m,n,mat);
+        play* game;
+        game = playrandom(m,n,mat,2);
 
-    andthestarterwas(game);
-    andthewinneris(game);
+        if(andthewinneris(game) == 2){
+            cpt2++;}
+        
+    }
+
+    per2 = (double)cpt2/(double)ng;
+
+
+    system("clear");
+    printf("== %dx%d BOARD RESULTS: ==\n\n",m,n);
+
+    printf("When (V) starts, they win %d out of %d games. (%f\%)\n", cpt, ng, per1*100);
+
+    printf("When (H) starts, they win %d out of %d games. (%f\%)\n\n", cpt2, ng, per2*100);
+
+    double totalperh = 
+    (double)((ng-cpt)+(cpt2))/(2*(double)ng);
+
+    printf("Total H wins: %d/%d (%f\%).\n",(ng-cpt)+(cpt2),2*ng, totalperh*100);
+    printf("Total V wins: %d/%d (%f\%).\n",cpt+(ng-cpt2),2*ng,(1-totalperh)*100);
+
+    printf("\n");
+
+    totalperh = 
+    (double)(cpt+cpt2)/(2*(double)ng);
+
+    printf("Total 1P wins: %d/%d (%f\%).\n",
+    cpt+cpt2, 2*ng, totalperh*100);
+    printf("Total 2P wins: %d/%d (%f\%).\n",(ng-cpt)+(ng-cpt2),2*ng, (1-totalperh)*100);
+
+    printf("\n");
+
+    printf("=========================\n");
+    printf("\n\n\n");
 
     return 0;
+
 }   
